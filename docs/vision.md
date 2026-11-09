@@ -1,21 +1,21 @@
 # Portfolio — vision
 
-*Draft for Jordan's review, 8 November 2026. Once approved, this is the contract: agents may not change it, and every issue and PR is judged against it.*
+*Draft for the owner's review, 8 November 2026. Once approved, this is the contract: agents may not change it, and every issue and PR is judged against it.*
 
 ## What it is
 
-Jordan's public portfolio site: six projects, each shown working, with its code and an honest case study of how it was built. One of the six is the AI development system that built the others.
+The owner's public portfolio site: six projects, each shown working, with its code and an honest case study of how it was built. One of the six is the AI development system that built the others.
 
-The site is itself the first piece of evidence. It should be fast, accessible and quietly inventive, so a visitor has already formed a view of Jordan's craft before reading a word.
+The site is itself the first piece of evidence. It should be fast, accessible and quietly inventive, so a visitor has already formed a view of the owner's craft before reading a word.
 
 ## Who it's for
 
-- **First:** a hiring manager, recruiter or senior engineer deciding whether to talk to Jordan. They have two minutes, often on a phone, and want proof, not adjectives.
+- **First:** a hiring manager, recruiter or senior engineer deciding whether to talk to the owner. They have two minutes, often on a phone, and want proof, not adjectives.
 - **Second:** a peer or collaborator who wants to go deeper: how the data work was done, how the agents are kept safe, what went wrong and what was learned.
 
 ## The core journey (what "working" means)
 
-1. **Land:** in five seconds, who Jordan is and what kind of work this is (data, product and AI-assisted engineering).
+1. **Land:** in five seconds, who the owner is and what kind of work this is (data, product and AI-assisted engineering).
 2. **Scan:** six project cards, each with a one-line promise, a visual and a status.
 3. **Try:** open a project and use it straight away: a live embed or a short recording, never a dead link.
 4. **Understand:** a case study that answers "what was hard, what did you decide, and how do you know it works?" in under five minutes, with links to code.
@@ -46,7 +46,7 @@ The site is **done** when all of these are true:
 
 A blog or CMS; comments; analytics beyond privacy-friendly page counts; a CV generator; multiple languages; showing private repositories' code.
 
-## Open questions for Jordan
+## Open questions for the owner
 
 1. **Domain:** which domain, and does London Living live on a subdomain of it? (Recommended: one personal domain, with apps on subdomains.)
 2. **How personal:** a short "about me" with a photo, or work only? (Recommended: a short about section, no photo required.)
