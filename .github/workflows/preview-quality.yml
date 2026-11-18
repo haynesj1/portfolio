@@ -1,0 +1,28 @@
+# Builds the static site, previews it locally on the runner and checks it at 375 px
+# against the vision's budgets (preview only: no deploy, no production domain).
+name: preview-quality
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - run: npm run smoke
+      - name: Check budgets at 375 px
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: npm run quality

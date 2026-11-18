@@ -10,10 +10,18 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "quality": "node scripts/quality.mjs",
+    "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^8.1.6",
     "astro": "^7.4.12"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "chrome-launcher": "^1.2.3",
+    "lighthouse": "^12.8.2",
+    "playwright": "^1.65.1"
   }
 }
