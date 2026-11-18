@@ -7,6 +7,7 @@ const good = { lcp: 1000, inp: 50, cls: 0, overflow: false, axeViolations: 0, pe
 test('passes when within budgets', () => assert.deepEqual(evaluate(good), []));
 test('fails each exceeded budget', () => {
   assert.equal(evaluate({ ...good, lcp: 2501 }).length, 1);
+  assert.equal(evaluate({ ...good, lcp: null }).length, 1);
   assert.equal(evaluate({ ...good, inp: 201 }).length, 1);
   assert.equal(evaluate({ ...good, cls: 0.11 }).length, 1);
   assert.equal(evaluate({ ...good, overflow: true }).length, 1);

@@ -9,6 +9,8 @@ import AxeBuilder from '@axe-core/playwright';
 import lighthouse from 'lighthouse';
 import * as chromeLauncher from 'chrome-launcher';
 
+// Mid-range phone profile (matches Lighthouse mobile defaults): 4x CPU slowdown, slow-4G network.
+export const PROFILE = { cpuSlowdown: 4, latency: 150, downloadBps: (1.6 * 1024 * 1024) / 8, uploadBps: (750 * 1024) / 8 };
 export const BUDGETS = { lcp: 2500, inp: 200, cls: 0.1, score: 90 };
 // Stable fixture routes: synthetic pages, independent of real project content.
 const PATHS = ['/', '/example-project/'];
@@ -20,7 +22,8 @@ export function evaluate(m) {
   const fails = [];
   if (m.overflow) fails.push('horizontal overflow at 375 px');
   if (m.axeViolations > 0) fails.push(`${m.axeViolations} axe violation(s)`);
-  if (m.lcp > BUDGETS.lcp) fails.push(`LCP ${m.lcp} ms > ${BUDGETS.lcp}`);
+  if (m.lcp == null) fails.push('LCP unavailable (no sample before input)');
+  else if (m.lcp > BUDGETS.lcp) fails.push(`LCP ${m.lcp} ms > ${BUDGETS.lcp}`);
   if (m.inp > BUDGETS.inp) fails.push(`INP ${m.inp} ms > ${BUDGETS.inp}`);
   if (m.cls > BUDGETS.cls) fails.push(`CLS ${m.cls} > ${BUDGETS.cls}`);
   for (const k of ['performance', 'accessibility', 'bestPractices']) {
@@ -40,6 +43,10 @@ async function waitForServer() {
 async function measureBrowser(browser, path) {
   const ctx = await browser.newContext({ viewport: { width: 375, height: 667 }, deviceScaleFactor: 2, hasTouch: true, isMobile: true });
   const page = await ctx.newPage();
+  const cdp = await ctx.newCDPSession(page);
+  await cdp.send('Emulation.setCPUThrottlingRate', { rate: PROFILE.cpuSlowdown });
+  await cdp.send('Network.enable');
+  await cdp.send('Network.emulateNetworkConditions', { offline: false, latency: PROFILE.latency, downloadThroughput: PROFILE.downloadBps, uploadThroughput: PROFILE.uploadBps });
   await page.addInitScript(() => {
     window.__v = { lcp: 0, cls: 0, inp: 0 };
     new PerformanceObserver((l) => { for (const e of l.getEntries()) window.__v.lcp = e.startTime; }).observe({ type: 'largest-contentful-paint', buffered: true });
@@ -47,7 +54,10 @@ async function measureBrowser(browser, path) {
     new PerformanceObserver((l) => { for (const e of l.getEntries()) if (e.interactionId) window.__v.inp = Math.max(window.__v.inp, e.duration); }).observe({ type: 'event', durationThreshold: 16, buffered: true });
   });
   await page.goto(BASE + path, { waitUntil: 'load' });
-  // Interact (tap and key press) so INP has real events; the page stays put.
+  // Loading metrics first: wait for a real LCP sample, since input ends LCP collection.
+  // No sample within the timeout is reported as unavailable (null), never as 0 ms.
+  const gotLcp = await page.waitForFunction(() => window.__v.lcp > 0, null, { timeout: 10000 }).then(() => true, () => false);
+  // Then interact (tap and key press) so INP has real events; the page stays put.
   await page.touchscreen.tap(20, 100);
   await page.keyboard.press('Tab');
   await page.waitForTimeout(500);
@@ -55,7 +65,7 @@ async function measureBrowser(browser, path) {
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   const axe = await new AxeBuilder({ page }).analyze();
   await ctx.close();
-  return { lcp: Math.round(v.lcp), cls: +v.cls.toFixed(4), inp: Math.round(v.inp), overflow, axeViolations: axe.violations.length };
+  return { lcp: gotLcp ? Math.round(v.lcp) : null, cls: +v.cls.toFixed(4), inp: Math.round(v.inp), overflow, axeViolations: axe.violations.length };
 }
 
 async function measureLighthouse(path) {
@@ -78,7 +88,7 @@ async function main() {
       const m = { ...(await measureBrowser(browser, path)), ...(await measureLighthouse(path)) };
       const fails = evaluate(m);
       if (fails.length) failed = true;
-      rows.push(`| ${path} | ${m.lcp} | ${m.inp} | ${m.cls} | ${m.performance} | ${m.accessibility} | ${m.bestPractices} | ${m.axeViolations} | ${m.overflow ? 'yes' : 'no'} | ${fails.length ? 'FAIL: ' + fails.join('; ') : 'pass'} |`);
+      rows.push(`| ${path} | ${m.lcp ?? "n/a"} | ${m.inp} | ${m.cls} | ${m.performance} | ${m.accessibility} | ${m.bestPractices} | ${m.axeViolations} | ${m.overflow ? 'yes' : 'no'} | ${fails.length ? 'FAIL: ' + fails.join('; ') : 'pass'} |`);
     }
     await browser.close();
   } finally { server.kill(); }
