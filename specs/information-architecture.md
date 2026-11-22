@@ -1,6 +1,6 @@
 # Information architecture and visual concept
 
-*Draft for Jordan's review. Status: **not approved**. Judged against `docs/vision.md`. No page templates or case-study content exist yet; this spec must be approved before either is built.*
+*Draft for the owner's review. Status: **not approved**. Judged against `docs/vision.md`. No page templates or case-study content exist yet; this spec must be approved before either is built.*
 
 ## 1. Goals
 
@@ -37,11 +37,11 @@ All six share one template (section 5). What differs is the demo and the evidenc
 | Project | Demo | Code link | Notes |
 |---|---|---|---|
 | London Living | Live embed of the discovery app (centrepiece) | Public repo, if public at launch | Embed is lazy-loaded behind a "Start the demo" button so it cannot hurt LCP. Poster and recording as fallback. |
-| The Island | Short recording of a session screen plus a playable audio excerpt, if Jordan approves one | Public repo | Wording is "relaxation", never treatment claims. |
+| The Island | Short recording of a session screen plus a playable audio excerpt, if the owner approves one | Public repo | Wording is "relaxation", never treatment claims. |
 | Goals Assistant | Recording only | None (private) | Recording must use synthetic data; see choice C. |
-| Kindle Daily | Recording or screenshot of a generated issue plus a sample EPUB excerpt | Public or none, per repo status | Sample must not expose personal preferences. |
+| Kindle Daily | Short recording of a generated issue being opened on a Kindle or reader, with a screenshot and sample EPUB excerpt as supplementary material | Public or none, per repo status | Sample must not expose personal preferences. |
 | Clear80 | Recording only | None (private) | Synthetic data only; see choice C. |
-| Development system | Annotated diagram of the issue-to-merge flow, with live build-time numbers | Public ops repo only if Jordan chooses | Centrepiece of "how this was built". |
+| Development system | Short recording walking one issue through to merge, with the annotated diagram and live build-time numbers as supplementary material | Public ops repo only if the owner chooses | Centrepiece of "how this was built". |
 
 ## 5. Page anatomy
 
@@ -96,13 +96,13 @@ None of these is decided here. Each has a recommendation, matching the vision's 
 - **Option 1: recordings and case study, no code links.** Safe; the demo uses synthetic data only.
 - **Option 2: add redacted code excerpts in the case study.** More proof, but each excerpt needs review for private details.
 - **Option 3: describe only, no recording.** Safest, weakest "show, don't claim".
-- **Recommendation: option 1.** Matches the vision's recommendation. Jordan should approve each recording before it is published.
+- **Recommendation: option 1.** Matches the vision's recommendation. the owner should approve each recording before it is published.
 
 (Domain, the vision's first open question, is a deployment matter, not an IA matter, and is left to that issue.)
 
 ## 9. Visual concept
 
-Direction, not a final design. All colours and fonts are placeholders until Jordan approves a direction.
+Direction, not a final design. All colours and fonts are placeholders until the owner approves a direction.
 
 - **Tone:** quiet, editorial and exact: lots of space, one strong typographic voice, restrained colour. The projects supply the colour through their own screenshots; the site frame stays neutral.
 - **Type:** one variable sans for text, optionally one display face for headings, self-hosted, `font-display: swap`, under about 100 KB total.
