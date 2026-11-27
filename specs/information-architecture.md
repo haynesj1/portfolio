@@ -1,10 +1,10 @@
 # Information architecture and visual concept
 
-*Draft for the owner's review. Status: **not approved**. Judged against `docs/vision.md`. No page templates or case-study content exist yet; this spec must be approved before either is built.*
+*Status: **approved by the owner, 26 November 2026**. Judged against `docs/vision.md`. No page templates or case-study content exist yet; this spec was approved before either is built.*
 
 ## 1. Goals
 
-Turn the vision's core journey (land, scan, try, understand, reach out) into a concrete site map, page anatomy and visual direction, so templates and case studies can be built without guessing. Where the vision does not decide something, it appears in section 8 as an owner choice, not a decision.
+Turn the vision's core journey (land, scan, try, understand, reach out) into a concrete site map, page anatomy and visual direction, so templates and case studies can be built without guessing. Where the vision did not decide something, section 8 records the owner's decision.
 
 ## 2. Site map
 
@@ -17,8 +17,8 @@ Turn the vision's core journey (land, scan, try, understand, reach out) into a c
 | `/projects/kindle-daily/` | Project page | Try, Understand |
 | `/projects/clear80/` | Project page (private repo) | Try, Understand |
 | `/projects/development-system/` | "How this was built" | Understand |
-| `/about/` | Short about (depth depends on choice B) | Land, Reach out |
-| `/contact/` | Contact route (depends on choice A); also a footer link on every page | Reach out |
+| `/about/` | Short about, no photo (choice B, option 2) | Land, Reach out |
+| `/contact/` | Contact route: email link with LinkedIn beside it (choice A, option 1); also a footer link on every page | Reach out |
 
 Case studies live on each project page (one scrolling page per project, with an in-page contents list), not on separate routes. One page per project keeps the journey short and avoids a second navigation level. Navigation is one row: Projects (jumps to the cards on `/`), How this was built, About, Contact. It must fit at 375 px without a hamburger menu.
 
@@ -76,23 +76,29 @@ A fixed spine, so readers learn it once. Each section is a heading plus short pr
 
 Reading width about 65 characters, base text 18 px at 375 px, headings in a logical h2/h3 order, in-page contents list at the top that collapses to a single line on a phone. A case study only starts once its app is about 70% through its milestone, as the vision says.
 
-## 8. Open owner choices
+## 8. Owner decisions
 
-None of these is decided here. Each has a recommendation, matching the vision's open questions where they overlap.
+The owner gave these answers in a planning session on 26 November 2026. The options and recommendations are kept for the record.
 
 ### A. Contact route
+**Decided: option 1, an email link with a LinkedIn link beside it.**
+
 - **Option 1: email link (`mailto:`).** No backend, no spam handling, works everywhere. Exposes the address to scrapers unless lightly obfuscated.
 - **Option 2: contact form.** Hides the address but needs a backend or third-party service, adds privacy and accessibility work.
 - **Option 3: LinkedIn only.** Zero build, but excludes people without an account and depends on a third party.
 - **Recommendation: option 1**, with a LinkedIn link beside it. Matches the vision's recommendation.
 
 ### B. How personal the about section is
+**Decided: option 2, a short about section with no photo.**
+
 - **Option 1: work only.** A few lines on the kind of work, no personal detail.
 - **Option 2: short about, no photo.** Two or three paragraphs on background and approach.
 - **Option 3: short about with a photo.** Most human, but adds a personal image to a public repo.
 - **Recommendation: option 2.** Gives a hiring manager context without publishing personal data. Matches the vision's recommendation.
 
 ### C. Evidence for private apps (Goals Assistant, Clear80)
+**Decided: option 1, recordings and a case study with no code links; the owner approves each recording before it is published.**
+
 - **Option 1: recordings and case study, no code links.** Safe; the demo uses synthetic data only.
 - **Option 2: add redacted code excerpts in the case study.** More proof, but each excerpt needs review for private details.
 - **Option 3: describe only, no recording.** Safest, weakest "show, don't claim".
