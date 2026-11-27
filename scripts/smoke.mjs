@@ -1,5 +1,6 @@
 // Smoke check: run after `npm run build`. Verifies expected routes were generated.
 import { readFileSync, existsSync } from 'node:fs';
+import { brokenLinks } from './links.mjs';
 
 const checks = [
   ['dist/index.html', 'Portfolio'],
@@ -13,6 +14,8 @@ for (const [file, text] of checks) {
   if (file.includes('example-project') && !/<h1[^>]*>Example project<\/h1>/.test(html)) {
     console.error(`${file}: MDX heading not rendered`); failed = true; continue;
   }
+  const broken = brokenLinks(html);
+  if (broken.length) { console.error(`${file}: navigation or footer links with no built page: ${broken.join(', ')}`); failed = true; continue; }
   console.log(`ok ${file}`);
 }
 process.exit(failed ? 1 : 0);
