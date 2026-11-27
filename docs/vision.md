@@ -1,6 +1,6 @@
 # Portfolio — vision
 
-*Draft for the owner's review, 8 November 2026. Once approved, this is the contract: agents may not change it, and every issue and PR is judged against it.*
+*Approved by the owner on 8 November 2026 (#4); last changed by the owner on 27 November 2026 (#30). This is the contract: agents may not change it, and every issue and PR is judged against it.*
 
 ## What it is
 
@@ -46,12 +46,16 @@ The site is **done** when all of these are true:
 
 A blog or CMS; comments; analytics beyond privacy-friendly page counts; a CV generator; multiple languages; showing private repositories' code.
 
-## Open questions for the owner
+## Decisions
 
-1. **Domain:** which domain, and does London Living live on a subdomain of it? (Recommended: one personal domain, with apps on subdomains.)
-2. **How personal:** a short "about me" with a photo, or work only? (Recommended: a short about section, no photo required.)
-3. **Contact:** email link, form, or LinkedIn only? (Recommended: an email link, which needs no backend.)
-4. **Private apps:** how much of Goals Assistant and Clear80 can be shown, given their repos are private? (Recommended: recordings and case studies, no code links.)
+Answered by the owner on 26 and 27 November 2026 (#21, #30).
+
+1. **Domain:** one personal domain, with apps on subdomains. The site goes live on Cloudflare's free address first and the domain is attached when the owner has chosen it; "live" in the done list still means the owner's own domain.
+2. **How personal:** a short about section with no photo. A placeholder stands in until the owner supplies the text.
+3. **Contact:** an email link with a LinkedIn link beside it. The email address is one on the portfolio's own domain, so until the domain exists the page carries the LinkedIn link only.
+4. **Private apps:** recordings and case studies, with no code links; the owner approves each recording before it is published.
+5. **Case studies:** an agent drafts each one from that project's decisions, reviews and numbers, and the owner edits and approves it. "How this was built" can start now; each app's study starts once the app is about 70% through its milestone.
+6. **Project status:** read when the site builds from a small public file that holds each project's percentage and last update and nothing else ([`specs/build-time-status.md`](../specs/build-time-status.md)).
 
 ## Order of work
 
