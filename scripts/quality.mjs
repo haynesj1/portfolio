@@ -3,7 +3,8 @@
 // Exits non-zero when any budget is exceeded. Writes a Markdown table to $GITHUB_STEP_SUMMARY when set.
 // Set CHROME_PATH to use a specific Chrome/Chromium binary.
 import { spawn } from 'node:child_process';
-import { appendFileSync } from 'node:fs';
+import { appendFileSync, readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import { chromium } from 'playwright';
 import AxeBuilder from '@axe-core/playwright';
 import lighthouse from 'lighthouse';
@@ -12,11 +13,28 @@ import * as chromeLauncher from 'chrome-launcher';
 // Mid-range phone profile (matches Lighthouse mobile defaults): 4x CPU slowdown, slow-4G network.
 export const PROFILE = { cpuSlowdown: 4, latency: 150, downloadBps: (1.6 * 1024 * 1024) / 8, uploadBps: (750 * 1024) / 8 };
 export const BUDGETS = { lcp: 2500, inp: 200, cls: 0.1, score: 90 };
-// Stable fixture routes: synthetic pages, independent of real project content.
-const PATHS = ['/', '/example-project/'];
+const DIST = 'dist';
 const PORT = 4399;
 const BASE = `http://127.0.0.1:${PORT}`;
 const chromePath = process.env.CHROME_PATH || undefined;
+
+// Finds every built page under `dir` (default dist/) and returns its URL path, sorted.
+// `a/index.html` -> `/a/`, `index.html` -> `/`, `a.html` -> `/a.html`. Non-HTML files and
+// 404.html (served with a 404 status, so not a page to measure) are ignored.
+export function discoverPages(dir = DIST) {
+  const out = [];
+  const walk = (abs, rel) => {
+    for (const e of readdirSync(abs, { withFileTypes: true })) {
+      if (e.isDirectory()) walk(join(abs, e.name), `${rel}${e.name}/`);
+      else if (e.name.endsWith('.html')) {
+        if (rel === '/' && e.name === '404.html') continue;
+        out.push(e.name === 'index.html' ? rel : rel + e.name);
+      }
+    }
+  };
+  walk(dir, '/');
+  return out.sort();
+}
 
 export function evaluate(m) {
   const fails = [];
@@ -81,10 +99,12 @@ async function main() {
   const server = spawn('npx', ['astro', 'preview', '--host', '127.0.0.1', '--port', String(PORT)], { stdio: 'ignore' });
   let failed = false;
   const rows = [];
+  const pages = discoverPages();
+  if (pages.length === 0) throw new Error(`no pages found in ${DIST}/: run npm run build first`);
   try {
     await waitForServer();
     const browser = await chromium.launch({ executablePath: chromePath, args: ['--no-sandbox'] });
-    for (const path of PATHS) {
+    for (const path of pages) {
       const m = { ...(await measureBrowser(browser, path)), ...(await measureLighthouse(path)) };
       const fails = evaluate(m);
       if (fails.length) failed = true;
